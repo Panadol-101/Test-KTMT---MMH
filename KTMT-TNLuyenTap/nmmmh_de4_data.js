@@ -1,12 +1,10 @@
 // Dữ liệu Đề 4 - Nhập môn mật mã học
-// Nguồn: Đề NMMMH(xin được)/Đề 4 (24 ảnh, 40 câu)
-
 var NMMMH_DE4_DATA = {
   "subjectId": "nmmmh",
   "subjectName": "Nhập môn mật mã học",
   "subjectIcon": "🔐",
   "subjectColor": "#0ea5e9",
-  "batchKey": "nmmmh_seed_v4",
+  "batchKey": "nmmmh_seed_v4_updated",
   "sourceSet": "Đề 4",
   "questions": [
     {
@@ -34,10 +32,11 @@ var NMMMH_DE4_DATA = {
           "text": "(AB 5C 50 BF)"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223050.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_2",
@@ -65,10 +64,11 @@ var NMMMH_DE4_DATA = {
           "text": "A3, 87"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223143.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_3",
@@ -95,10 +95,11 @@ var NMMMH_DE4_DATA = {
           "text": "67"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223215.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_4",
@@ -126,10 +127,11 @@ var NMMMH_DE4_DATA = {
           "text": "F7"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223258.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_5",
@@ -142,25 +144,34 @@ var NMMMH_DE4_DATA = {
       "options": [
         {
           "id": "a",
-          "text": "B1"
+          "text": "B1",
+          "image": null,
+          "image_data": null
         },
         {
           "id": "b",
-          "text": "E3"
+          "text": "E3",
+          "image": null,
+          "image_data": null
         },
         {
           "id": "c",
-          "text": "A3"
+          "text": "A2",
+          "image": null,
+          "image_data": null
         },
         {
           "id": "d",
-          "text": "23"
+          "text": "23",
+          "image": null,
+          "image_data": null
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223327.png",
-      "needs_check": true
+      "needs_check": true,
+      "image_data": null
     },
     {
       "id": "nmmmh_d4_6",
@@ -187,10 +198,11 @@ var NMMMH_DE4_DATA = {
           "text": "DES, AES"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223337.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_7",
@@ -218,10 +230,11 @@ var NMMMH_DE4_DATA = {
           "text": "2, 3"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223712.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_8",
@@ -248,10 +261,11 @@ var NMMMH_DE4_DATA = {
           "text": "Tính khuếch tán trong nguyên lí Shannon yêu cầu khi thay đổi 1 bit trong khóa phải dẫn tới sự thay đổi một nửa số bit trong bản mã tạo ra và ngược lại"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223746.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_9",
@@ -278,10 +292,11 @@ var NMMMH_DE4_DATA = {
           "text": "Tấn công với bản mã được chọn"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223746.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_10",
@@ -309,10 +324,11 @@ var NMMMH_DE4_DATA = {
           "text": "4D, 5B"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223820.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_11",
@@ -339,10 +355,11 @@ var NMMMH_DE4_DATA = {
           "text": "51"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223847.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_12",
@@ -369,10 +386,11 @@ var NMMMH_DE4_DATA = {
           "text": "Chỉ sử dụng phép thế trong quá trình mã hóa dữ liệu"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223847.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_13",
@@ -399,10 +417,11 @@ var NMMMH_DE4_DATA = {
           "text": "Là hệ mật khóa đối xứng."
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223847.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_14",
@@ -429,10 +448,11 @@ var NMMMH_DE4_DATA = {
           "text": "(EA; FE; 86; 54)"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223918.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_15",
@@ -459,10 +479,11 @@ var NMMMH_DE4_DATA = {
           "text": "(77; 77; 4E; 70)"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223918.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_16",
@@ -490,10 +511,11 @@ var NMMMH_DE4_DATA = {
           "text": "21"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 223947.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_17",
@@ -524,10 +546,11 @@ var NMMMH_DE4_DATA = {
           "text": "Mỗi vòng mã chỉ thực hiện biến đổi nửa trái của khối dữ liệu."
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224004.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_18",
@@ -554,10 +577,11 @@ var NMMMH_DE4_DATA = {
           "text": "(08)"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224004.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_19",
@@ -584,10 +608,11 @@ var NMMMH_DE4_DATA = {
           "text": "Số vòng thực hiện của mạng SPN luôn lớn hơn so với mạng Feistel"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224136.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_20",
@@ -614,10 +639,11 @@ var NMMMH_DE4_DATA = {
           "text": "4C"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224136.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_21",
@@ -644,10 +670,11 @@ var NMMMH_DE4_DATA = {
           "text": "Độ dài của khóa không cân bằng với độ dài của khối dữ liệu"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224855.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_22",
@@ -674,10 +701,11 @@ var NMMMH_DE4_DATA = {
           "text": "192 bít"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224855.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_23",
@@ -704,10 +732,11 @@ var NMMMH_DE4_DATA = {
           "text": "12"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224855.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_24",
@@ -734,10 +763,11 @@ var NMMMH_DE4_DATA = {
           "text": "64/192/256 bít"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224932.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_25",
@@ -764,10 +794,11 @@ var NMMMH_DE4_DATA = {
           "text": "Thuật toán AES thực hiện 10 vòng mã hóa đối với khóa 256 bit"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224932.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_26",
@@ -794,10 +825,11 @@ var NMMMH_DE4_DATA = {
           "text": "Các phép biến đổi trong vòng lặp có thể nghịch đảo được"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 224932.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_27",
@@ -824,10 +856,11 @@ var NMMMH_DE4_DATA = {
           "text": "AES dùng mạng thay thế hoán vị (SPN) trên cấu trúc các mảng trạng thái"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225019.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_28",
@@ -854,10 +887,11 @@ var NMMMH_DE4_DATA = {
           "text": "32 từ"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225019.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_29",
@@ -884,10 +918,11 @@ var NMMMH_DE4_DATA = {
           "text": "Mạng SPN trong AES tương tự mạng Feistel trong DES"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225019.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_30",
@@ -914,10 +949,11 @@ var NMMMH_DE4_DATA = {
           "text": "1"
         }
       ],
-      "answer": "",
+      "answer": "d",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225054.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_31",
@@ -944,10 +980,11 @@ var NMMMH_DE4_DATA = {
           "text": "10/12/16"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225054.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_32",
@@ -974,10 +1011,11 @@ var NMMMH_DE4_DATA = {
           "text": "Thuật toán Rijndael có thiết kế bị ảnh hưởng bởi thuật toán mã khối Square"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225054.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_33",
@@ -1004,10 +1042,11 @@ var NMMMH_DE4_DATA = {
           "text": "256 bít"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225126.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_34",
@@ -1034,10 +1073,11 @@ var NMMMH_DE4_DATA = {
           "text": "B"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225126.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_35",
@@ -1064,10 +1104,11 @@ var NMMMH_DE4_DATA = {
           "text": "60 từ"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225126.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_36",
@@ -1094,10 +1135,11 @@ var NMMMH_DE4_DATA = {
           "text": "A"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225153.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_37",
@@ -1124,10 +1166,11 @@ var NMMMH_DE4_DATA = {
           "text": "50 từ"
         }
       ],
-      "answer": "",
+      "answer": "b",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225153.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_38",
@@ -1154,10 +1197,11 @@ var NMMMH_DE4_DATA = {
           "text": "10"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225153.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_39",
@@ -1184,10 +1228,11 @@ var NMMMH_DE4_DATA = {
           "text": "12"
         }
       ],
-      "answer": "",
+      "answer": "a",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225223.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     },
     {
       "id": "nmmmh_d4_40",
@@ -1214,10 +1259,11 @@ var NMMMH_DE4_DATA = {
           "text": "Phụ thuộc kích thước khóa"
         }
       ],
-      "answer": "",
+      "answer": "c",
       "source_set": "Đề 4",
       "source_image": "Screenshot 2026-08-30 225223.png",
-      "needs_check": true
+      "needs_check": false,
+      "answer_source": "Đã đối chiếu"
     }
   ]
 };

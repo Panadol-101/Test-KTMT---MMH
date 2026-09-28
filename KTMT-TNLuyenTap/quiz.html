@@ -353,6 +353,7 @@
   <!-- Built-in KTMT Data (always available) -->
   <script src="questions_data.js"></script>
   <script src="nmmmh_legacy_visual_fixes.js"></script>
+  <script src="nmmmh_answer_updates.js"></script>
 
   <!-- Main Quiz Logic -->
   <script>
@@ -445,6 +446,30 @@
       // Trang ôn tập cũng có thể được mở trực tiếp mà không qua index.html.
       if (state.subjectId === 'nmmmh' && typeof applyNmmmhLegacyVisualFixes === 'function' && applyNmmmhLegacyVisualFixes(qData)) {
         await DB.put('questions', qData);
+      }
+
+      // Tự động đồng bộ đáp án mới đối chiếu vào IndexedDB nếu mở trực tiếp quiz.html
+      if (state.subjectId === 'nmmmh' && qData && Array.isArray(qData.data) && typeof NMMMH_ANSWER_UPDATES !== 'undefined' && NMMMH_ANSWER_UPDATES.answers) {
+        const aKey = NMMMH_ANSWER_UPDATES.batchKey || 'nmmmh_answer_updates_v2';
+        const alreadyUpdated = await DB.get('settings', aKey);
+        if (!alreadyUpdated) {
+          let updatedAnsCount = 0;
+          qData.data.forEach(q => {
+            const ans = NMMMH_ANSWER_UPDATES.answers[String(q.id)];
+            const hasAns = Array.isArray(q.answer) ? q.answer.length > 0 : Boolean(q.answer && String(q.answer).trim());
+            if (ans && !hasAns) {
+              q.answer = ans;
+              q.needs_check = false;
+              q.answer_source = 'Đã đối chiếu';
+              updatedAnsCount++;
+            }
+          });
+          if (updatedAnsCount > 0) {
+            await DB.put('questions', qData);
+            console.log(`[Quiz] Đã tự động cập nhật ${updatedAnsCount} đáp án mới vào IndexedDB.`);
+          }
+          await DB.put('settings', { key: aKey, value: true, updatedAt: Date.now() });
+        }
       }
 
       // Safe image path fix (repair bare filenames without folder prefix)

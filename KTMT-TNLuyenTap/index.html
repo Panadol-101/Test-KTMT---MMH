@@ -589,21 +589,21 @@
 
     // ===== Seed NMMMH Batches =====
     async function seedNmmmh() {
-      // Đề 1 (key: nmmmh_seed_v1)
+      // Đề 1 (key: nmmmh_seed_v2)
       if (typeof NMMMH_DE1_DATA !== 'undefined') {
-        await seedSubjectBatch(NMMMH_DE1_DATA, 'nmmmh_seed_v' + (NMMMH_DE1_DATA.seedVersion || 1), 'Đề 1');
+        await seedSubjectBatch(NMMMH_DE1_DATA, 'nmmmh_seed_v' + (NMMMH_DE1_DATA.seedVersion || 2), 'Đề 1');
       }
-      // Đề 2 (key: nmmmh_seed_v2)
+      // Đề 2 (key: nmmmh_seed_v2_updated)
       if (typeof NMMMH_DE2_DATA !== 'undefined') {
-        await seedSubjectBatch(NMMMH_DE2_DATA, NMMMH_DE2_DATA.batchKey || 'nmmmh_seed_v2', 'Đề 2');
+        await seedSubjectBatch(NMMMH_DE2_DATA, NMMMH_DE2_DATA.batchKey || 'nmmmh_seed_v2_updated', 'Đề 2');
       }
-      // Đề 3 (key: nmmmh_seed_v3)
+      // Đề 3 (key: nmmmh_seed_v3_updated)
       if (typeof NMMMH_DE3_DATA !== 'undefined') {
-        await seedSubjectBatch(NMMMH_DE3_DATA, NMMMH_DE3_DATA.batchKey || 'nmmmh_seed_v3', 'Đề 3');
+        await seedSubjectBatch(NMMMH_DE3_DATA, NMMMH_DE3_DATA.batchKey || 'nmmmh_seed_v3_updated', 'Đề 3');
       }
-      // Đề 4 (key: nmmmh_seed_v4)
+      // Đề 4 (key: nmmmh_seed_v4_updated)
       if (typeof NMMMH_DE4_DATA !== 'undefined') {
-        await seedSubjectBatch(NMMMH_DE4_DATA, NMMMH_DE4_DATA.batchKey || 'nmmmh_seed_v4', 'Đề 4');
+        await seedSubjectBatch(NMMMH_DE4_DATA, NMMMH_DE4_DATA.batchKey || 'nmmmh_seed_v4_updated', 'Đề 4');
       }
       if (typeof NMMMH_MIDTERM_DATA !== 'undefined') {
         await seedSubjectBatch(NMMMH_MIDTERM_DATA, NMMMH_MIDTERM_DATA.batchKey || 'nmmmh_midterm_seed_v1', 'Đề thi giữa kì');
@@ -618,7 +618,7 @@
         await seedSubjectBatch(NMMMH_DE7_DATA, NMMMH_DE7_DATA.batchKey || 'nmmmh_seed_v7', 'Đề 7');
       }
       if (typeof NMMMH_DE8_DATA !== 'undefined') {
-        await seedSubjectBatch(NMMMH_DE8_DATA, NMMMH_DE8_DATA.batchKey || 'nmmmh_seed_v8', 'Đề 8');
+        await seedSubjectBatch(NMMMH_DE8_DATA, NMMMH_DE8_DATA.batchKey || 'nmmmh_seed_v8_updated', 'Đề 8');
       }
       if (typeof NMMMH_FINAL_DATA !== 'undefined') {
         await seedSubjectBatch(NMMMH_FINAL_DATA, NMMMH_FINAL_DATA.batchKey || 'nmmmh_seed_final_v1', 'Đề thi NMMMH');
