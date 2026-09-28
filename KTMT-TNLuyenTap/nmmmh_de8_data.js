@@ -1,0 +1,17 @@
+// Câu hỏi tự đọc từ Đề 8; câu nguồn có đáp án lựa chọn bất nhất được giữ để rà soát.
+var NMMMH_DE8_DATA = {
+  subjectId:'nmmmh', subjectName:'Nhập môn mật mã học', subjectIcon:'🔐', subjectColor:'#0ea5e9',
+  batchKey:'nmmmh_seed_v8', sourceSet:'Đề 8',
+  questions:[
+    {id:'nmmmh_d8_1',type:'choice',num:'D8_1',chapter:1,chapter_name:'Hàm Euler',prompt:'Số phần tử của nhóm nhân Z^*_{1764} là?',options:[{id:'a',text:'504'},{id:'b',text:'502'},{id:'c',text:'510'},{id:'d',text:'508'}],answer:'a',needs_check:false},
+    {id:'nmmmh_d8_2',type:'choice',num:'D8_2',chapter:1,chapter_name:'Phần tử sinh',prompt:'Số phần tử sinh của nhóm nhân Z^*_{4802} là?',options:[{id:'a',text:'296'},{id:'b',text:'294'},{id:'c',text:'298'},{id:'d',text:'394'}],answer:'',needs_check:true},
+    {id:'nmmmh_d8_3',type:'choice',num:'D8_3',chapter:1,chapter_name:'Logarit rời rạc',prompt:'Cho thuật toán Bước lớn bước nhỏ với đầu vào β=32, α=31, n=61. Bảng trung gian cho α^j mod n là 1,31,46,23,42,21,41,51; và β·(α^(−m))^i là 32,18,33,30,55,50,51,2. Hãy tính log_{31}32 của thuật toán.',options:[{id:'a',text:'33'},{id:'b',text:'42'},{id:'c',text:'18'},{id:'d',text:'55'}],answer:'d',needs_check:false},
+    {id:'nmmmh_d8_4',type:'choice',num:'D8_4',chapter:1,chapter_name:'Thặng dư bậc hai',prompt:'Khẳng định nào sau đây là ĐÚNG? Cho p là nguyên tố lẻ và α là phần tử sinh của Z^*_{p}. Khi đó a∈Z^*_{p} là thặng dư bậc hai theo modulo p nếu và chỉ nếu a=α^i mod p với',options:[{id:'a',text:'i là số nguyên chẵn'},{id:'b',text:'i là số nguyên lẻ'},{id:'c',text:'gcd(i,φ(p))=1'},{id:'d',text:'i∈Z^*_{p}'}],answer:'a',needs_check:false},
+    {id:'nmmmh_d8_5',type:'choice',num:'D8_5',chapter:4,chapter_name:'Rabin',prompt:'Cho các số 2231,119,1349,5609,1173. Nếu là số nguyên Blum ghi 1, không phải ghi 0; chuỗi theo thứ tự tương ứng là',options:[{id:'a',text:'00110'},{id:'b',text:'01110'},{id:'c',text:'10110'},{id:'d',text:'00100'}],answer:'a',needs_check:false},
+    {id:'nmmmh_d8_6',type:'choice',num:'D8_6',chapter:1,chapter_name:'Phần tử sinh',prompt:'Cho các phần tử 2,9,13,17 thuộc nhóm nhân Z^*_{19}; nếu là phần tử sinh ghi 1, không là phần tử sinh ghi 0. Chuỗi kết quả là',options:[{id:'a',text:'1101'},{id:'b',text:'1010'},{id:'c',text:'1110'},{id:'d',text:'0110'}],answer:'b',needs_check:false},
+    {id:'nmmmh_d8_7',type:'choice',num:'D8_7',chapter:1,chapter_name:'Phần tử sinh',prompt:'Phần tử sinh nhỏ nhất của Z^*_{73} là',options:[{id:'a',text:'2'},{id:'b',text:'3'},{id:'c',text:'4'},{id:'d',text:'5'}],answer:'d',needs_check:false},
+    {id:'nmmmh_d8_8',type:'choice',num:'D8_8',chapter:1,chapter_name:'Nhóm nhân',prompt:'Cho các phần tử 13,231,1021,454. Nếu thuộc nhóm nhân Z^*_{3528} ghi 1, không thuộc ghi 0. Chuỗi kết quả là',options:[{id:'a',text:'1110'},{id:'b',text:'1111'},{id:'c',text:'1010'},{id:'d',text:'1011'}],answer:'c',needs_check:false},
+    {id:'nmmmh_d8_9',type:'choice',num:'D8_9',chapter:1,chapter_name:'Nhóm cyclic',prompt:'Cho các nhóm nhân Z^*_{1133}, Z^*_{676}, Z^*_{686}; nếu là nhóm cyclic ghi 1, không cyclic ghi 0. Chuỗi kết quả là',options:[{id:'a',text:'001'},{id:'b',text:'101'},{id:'c',text:'111'},{id:'d',text:'110'}],answer:'a',needs_check:false},
+    {id:'nmmmh_d8_10',type:'choice',num:'D8_10',chapter:1,chapter_name:'Hàm Euler',prompt:'Cấp của nhóm nhân Z^*_{776} là?',options:[{id:'a',text:'394'},{id:'b',text:'382'},{id:'c',text:'384'},{id:'d',text:'386'}],answer:'c',needs_check:false}
+  ]
+};

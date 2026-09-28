@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Pro — Ôn Thi Trắc Nghiệm Đa Môn</title>
+  <meta name="description" content="Nền tảng ôn thi trắc nghiệm đa môn học. Luyện tập thông minh, lưu tiến độ tự động.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1; --primary-hover: #4f46e5; --primary-glow: rgba(99,102,241,0.25);
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --bg: #080e1c; --bg-card: #111827; --bg-card-hover: #1a2537; --bg-card-alt: #0d1526;
+      --border: #1f2d45; --border-focus: #6366f1;
+      --text-main: #f1f5f9; --text-muted: #64748b; --text-sub: #94a3b8;
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.5);
+      --radius-md: 12px; --radius-lg: 16px; --radius-xl: 24px;
+      --font: 'Inter', system-ui, sans-serif;
+      --transition: all 0.2s cubic-bezier(0.4,0,0.2,1);
+    }
+    [data-theme="light"] {
+      --bg: #f0f4ff; --bg-card: #ffffff; --bg-card-hover: #f8faff; --bg-card-alt: #f1f5f9;
+      --border: #dde3f0; --border-focus: #6366f1;
+      --text-main: #0f172a; --text-muted: #64748b; --text-sub: #475569;
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-main); min-height: 100vh; transition: background 0.3s, color 0.3s; }
+    .math-matrix { display:inline-flex; align-items:stretch; vertical-align:middle; margin:0 0.14em; line-height:1; }
+    .math-matrix-bracket { display:flex; align-items:center; font-family:Georgia,serif; font-size:2em; line-height:0.8; transform:scaleY(1.38); }
+    .math-matrix-body { display:inline-flex; flex-direction:column; justify-content:center; gap:0.12em; padding:0.08em 0.28em; line-height:1.15; }
+    .math-matrix-row { display:flex; justify-content:space-around; gap:0.8em; white-space:nowrap; }
+    .math-overline { display:inline-block; border-top:1px solid currentColor; line-height:1; padding-top:0.1em; }
+
+    /* Header */
+    header { background: rgba(8,14,28,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); position: sticky; top:0; z-index:100; }
+    [data-theme="light"] header { background: rgba(240,244,255,0.92); }
+    .nav { max-width: 1280px; margin:0 auto; padding: 0.9rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .logo { display:flex; align-items:center; gap:0.75rem; text-decoration:none; color:var(--text-main); }
+    .logo-icon { width:42px; height:42px; background: linear-gradient(135deg, #6366f1, #a855f7); border-radius: var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.3rem; box-shadow: 0 4px 15px rgba(99,102,241,0.45); }
+    .logo-text strong { display:block; font-size:1.1rem; font-weight:800; letter-spacing:-0.02em; }
+    .logo-text span { font-size:0.73rem; color:var(--text-muted); }
+    .nav-actions { display:flex; gap:0.6rem; align-items:center; }
+    .btn { display:inline-flex; align-items:center; gap:0.45rem; padding:0.5rem 1rem; border-radius:var(--radius-md); font-size:0.875rem; font-weight:600; border:1px solid transparent; cursor:pointer; transition:var(--transition); font-family:inherit; text-decoration:none; }
+    .btn-primary { background: linear-gradient(135deg,#6366f1,#8b5cf6); color:white; border:none; box-shadow:0 2px 12px rgba(99,102,241,0.4); }
+    .btn-primary:hover { filter:brightness(1.1); transform:translateY(-1px); box-shadow:0 4px 20px rgba(99,102,241,0.5); }
+    .btn-ghost { background:transparent; color:var(--text-sub); border-color:var(--border); }
+    .btn-ghost:hover { background:var(--bg-card); border-color:var(--border-focus); color:var(--text-main); }
+    .btn-icon { padding:0.5rem; border-radius:var(--radius-md); background:var(--bg-card); color:var(--text-main); border:1px solid var(--border); cursor:pointer; transition:var(--transition); font-size:1rem; }
+    .btn-icon:hover { border-color:var(--border-focus); background:var(--bg-card-hover); }
+
+    /* Hero */
+    .hero { padding: 4rem 1.5rem 2.5rem; text-align:center; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(99,102,241,0.18), transparent); pointer-events:none; }
+    .hero h2 { font-size: clamp(1.8rem,4vw,2.8rem); font-weight:800; letter-spacing:-0.03em; line-height:1.2; margin-bottom:0.75rem; }
+    .hero h2 span { background: linear-gradient(135deg,#818cf8,#c084fc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero p { color:var(--text-muted); font-size:1rem; max-width:520px; margin:0 auto 2rem; }
+    .hero-stats { display:flex; gap:2rem; justify-content:center; flex-wrap:wrap; }
+    .hero-stat { text-align:center; }
+    .hero-stat .num { font-size:1.6rem; font-weight:800; color:var(--primary); display:block; }
+    .hero-stat .lbl { font-size:0.75rem; color:var(--text-muted); }
+
+    /* Main Content */
+    .main { max-width:1280px; margin:0 auto; padding:2rem 1.5rem 5rem; }
+    .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+    .section-header h3 { font-size:1.1rem; font-weight:700; }
+
+    /* Subject Grid */
+    .subjects-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1.25rem; }
+
+    .subject-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:1.5rem; transition:var(--transition); text-decoration:none; color:var(--text-main); display:flex; flex-direction:column; gap:1rem; position:relative; overflow:hidden; }
+    .subject-card::before { content:''; position:absolute; inset:0; background: linear-gradient(135deg, var(--card-color, #6366f1)08, transparent 60%); opacity:0; transition:var(--transition); pointer-events:none; }
+    .subject-card:hover { border-color: var(--card-color, var(--primary)); box-shadow: 0 8px 32px rgba(0,0,0,0.25), 0 0 0 1px var(--card-color, var(--primary))40; transform:translateY(-3px); }
+    .subject-card:hover::before { opacity:1; }
+
+    .card-top { display:flex; align-items:center; justify-content:space-between; gap:0.5rem; }
+    .card-icon { width:48px; height:48px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; font-size:1.5rem; background: var(--bg-card-alt); border:1px solid var(--border); flex-shrink:0; }
+    .card-top-right { display:flex; align-items:center; gap:0.5rem; flex-shrink:0; }
+    .card-badge { font-size:0.7rem; font-weight:700; padding:0.25rem 0.6rem; border-radius:999px; background:rgba(99,102,241,0.15); color:#818cf8; white-space:nowrap; }
+    .card-badge.builtin { background:rgba(16,185,129,0.15); color:#34d399; }
+    .btn-card-delete { width:32px; height:32px; border-radius:var(--radius-md); border:1px solid var(--border); background:var(--bg-card-alt); color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-size:0.95rem; cursor:pointer; transition:var(--transition); padding:0; line-height:1; flex-shrink:0; }
+    .btn-card-delete:hover { background:rgba(239,68,68,0.15); border-color:var(--danger); color:var(--danger); transform:scale(1.06); }
+    .card-name { font-size:1.05rem; font-weight:700; letter-spacing:-0.01em; line-height:1.35; word-break:break-word; overflow-wrap:break-word; }
+    .card-count { font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem; }
+
+    .card-progress { display:flex; flex-direction:column; gap:0.4rem; }
+    .progress-row { display:flex; justify-content:space-between; font-size:0.78rem; gap:0.5rem; }
+    .progress-row .answered { color:var(--text-sub); white-space:nowrap; }
+    .progress-row .accuracy { color:var(--success); font-weight:600; white-space:nowrap; }
+    .progress-track { height:5px; background:var(--border); border-radius:999px; overflow:hidden; }
+    .progress-fill { height:100%; border-radius:999px; transition:width 0.5s ease; background: linear-gradient(90deg, var(--card-color, var(--primary)), var(--card-color, var(--primary))cc); }
+
+    .card-actions { display:flex; flex-direction:column; gap:0.5rem; margin-top:auto; padding-top:0.85rem; border-top:1px solid var(--border); }
+    .card-btn { width:100%; justify-content:center; text-align:center; box-sizing:border-box; padding:0.65rem 0.85rem; font-size:0.875rem; font-weight:600; white-space:nowrap; }
+
+    /* Add Subject Card */
+    .add-card { border:2px dashed var(--border); border-radius:var(--radius-xl); padding:1.5rem; cursor:pointer; transition:var(--transition); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; min-height:200px; background:transparent; color:var(--text-muted); }
+    .add-card:hover { border-color:var(--primary); color:var(--primary); background:rgba(99,102,241,0.04); }
+    .add-card-icon { width:52px; height:52px; border-radius:50%; background:var(--bg-card); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.4rem; transition:var(--transition); }
+    .add-card:hover .add-card-icon { background:rgba(99,102,241,0.1); border-color:var(--primary); }
+    .add-card p { font-size:0.85rem; font-weight:600; }
+    .add-card span { font-size:0.75rem; color:var(--text-muted); text-align:center; }
+
+    /* ===== Import Modal ===== */
+    .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); z-index:500; display:none; align-items:center; justify-content:center; padding:1rem; }
+    .modal-overlay.show { display:flex; }
+    .modal-box { background:var(--bg-card); border:1px solid var(--border-focus); border-radius:var(--radius-xl); width:100%; max-width:700px; max-height:92vh; overflow-y:auto; box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.2); animation:slideIn 0.28s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes slideIn { from{opacity:0;transform:translateY(-24px) scale(0.96)} to{opacity:1;transform:none} }
+
+    /* Stepper */
+    .stepper { display:flex; align-items:center; gap:0; padding:1.5rem 2rem 0; }
+    .step { display:flex; flex-direction:column; align-items:center; gap:0.3rem; flex:1; }
+    .step-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--border); background:var(--bg-card-alt); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--text-muted); transition:var(--transition); }
+    .step.active .step-dot { border-color:var(--primary); background:var(--primary); color:white; box-shadow:0 0 0 4px rgba(99,102,241,0.25); }
+    .step.done .step-dot { border-color:var(--success); background:var(--success); color:white; }
+    .step-label { font-size:0.68rem; color:var(--text-muted); font-weight:600; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+    .step.active .step-label { color:var(--primary); }
+    .step-line { flex:1; height:2px; background:var(--border); border-radius:999px; margin-bottom:1.2rem; transition:var(--transition); }
+    .step-line.done { background:var(--success); }
+
+    .modal-body { padding:1.5rem 2rem 2rem; }
+    .modal-title { font-size:1.2rem; font-weight:700; margin-bottom:0.2rem; }
+    .modal-sub { font-size:0.82rem; color:var(--text-muted); margin-bottom:1.5rem; }
+
+    /* Step 1 - Config */
+    .field { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem; }
+    .field label { font-size:0.78rem; font-weight:600; color:var(--text-sub); text-transform:uppercase; letter-spacing:0.03em; }
+    .field input, .field select { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text-main); padding:0.65rem 0.9rem; font-family:inherit; font-size:0.9rem; outline:none; transition:var(--transition); width:100%; }
+    .field input:focus, .field select:focus { border-color:var(--border-focus); box-shadow:0 0 0 3px var(--primary-glow); }
+
+    /* Step 2 - Import */
+    .import-tabs { display:flex; gap:0; margin-bottom:1rem; border-bottom:2px solid var(--border); }
+    .import-tab { padding:0.6rem 1.1rem; font-size:0.85rem; font-weight:600; color:var(--text-muted); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; transition:var(--transition); }
+    .import-tab.active { color:var(--primary); border-color:var(--primary); }
+    .import-pane { display:none; }
+    .import-pane.active { display:block; }
+    .paste-area { width:100%; min-height:200px; background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-md); color:var(--text-main); padding:0.85rem 1rem; font-size:0.85rem; font-family:'Courier New', monospace; resize:vertical; outline:none; transition:var(--transition); line-height:1.6; }
+    .paste-area:focus { border-color:var(--border-focus); box-shadow:0 0 0 3px var(--primary-glow); }
+    .format-hint { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-md); padding:0.85rem 1rem; font-size:0.78rem; color:var(--text-muted); margin-bottom:1rem; }
+    .format-hint strong { color:var(--text-sub); display:block; margin-bottom:0.4rem; }
+    .format-hint code { font-family:monospace; color:#818cf8; }
+    .drop-zone { border:2px dashed var(--border); border-radius:var(--radius-lg); padding:2.5rem 1rem; text-align:center; cursor:pointer; transition:var(--transition); }
+    .drop-zone:hover, .drop-zone.drag-over { border-color:var(--primary); background:rgba(99,102,241,0.05); }
+    .drop-zone input[type="file"] { display:none; }
+    .drop-zone .dz-icon { font-size:2.5rem; margin-bottom:0.75rem; }
+    .drop-zone p { font-size:0.875rem; font-weight:600; color:var(--text-sub); }
+    .drop-zone span { font-size:0.75rem; color:var(--text-muted); }
+
+    /* Step 3 - Preview */
+    .preview-summary { display:flex; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+    .preview-stat { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-md); padding:0.6rem 1rem; font-size:0.8rem; }
+    .preview-stat strong { display:block; font-size:1.2rem; color:var(--primary); }
+    .preview-list { max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:0.5rem; }
+    .preview-item { background:var(--bg-card-alt); border:1px solid var(--border); border-radius:var(--radius-md); padding:0.7rem 0.9rem; font-size:0.82rem; }
+    .preview-item .q-num { color:var(--primary); font-weight:700; margin-right:0.4rem; }
+    .preview-item .q-answer { color:var(--success); font-weight:700; }
+    .preview-item .q-answer.missing { color:var(--danger); }
+    .preview-item-prompt { white-space:pre-line; color:var(--text-main); font-weight:500; word-break:break-word; max-height:90px; overflow-y:auto; line-height:1.5; }
+    .preview-item.error { border-color:var(--danger); background:rgba(239,68,68,0.05); }
+
+    /* Action bar */
+    .modal-actions { display:flex; gap:0.75rem; justify-content:space-between; margin-top:1.5rem; padding-top:1rem; border-top:1px solid var(--border); }
+    .modal-actions-right { display:flex; gap:0.75rem; }
+
+    /* Delete modal */
+    .delete-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); z-index:600; display:none; align-items:center; justify-content:center; }
+    .delete-overlay.show { display:flex; }
+    .delete-box { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-xl); padding:2rem; width:100%; max-width:400px; text-align:center; box-shadow:var(--shadow-lg); animation:slideIn 0.2s ease; }
+    .delete-box h3 { margin-bottom:0.5rem; }
+    .delete-box p { color:var(--text-muted); font-size:0.875rem; margin-bottom:1.5rem; }
+    .delete-actions { display:flex; gap:0.75rem; justify-content:center; }
+    .btn-danger { background:var(--danger); color:white; border:none; }
+    .btn-danger:hover { filter:brightness(1.1); }
+
+    /* Toast */
+    #dashboard-toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:var(--bg-card); border:1px solid var(--primary); color:var(--text-main); padding:0.75rem 1.5rem; border-radius:999px; font-size:0.875rem; font-weight:600; box-shadow:0 8px 30px rgba(0,0,0,0.5); z-index:9999; opacity:0; transition:opacity 0.3s ease; white-space:nowrap; pointer-events:none; }
+
+    /* Empty state */
+    .no-subjects { text-align:center; padding:4rem 1rem; grid-column:1/-1; }
+    .no-subjects .ns-icon { font-size:3.5rem; margin-bottom:1rem; }
+    .no-subjects h3 { font-size:1.1rem; margin-bottom:0.5rem; }
+    .no-subjects p { color:var(--text-muted); font-size:0.875rem; }
+
+    @media (max-width: 640px) {
+      .hero { padding:2.5rem 1rem 1.5rem; }
+      .modal-body, .stepper { padding-left:1.25rem; padding-right:1.25rem; }
+      .modal-actions { flex-direction:column; }
+      .modal-actions-right { justify-content:flex-end; }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+
+  <!-- Header -->
+  <header>
+    <nav class="nav">
+      <a href="#" class="logo" onclick="return false;">
+        <div class="logo-icon">📚</div>
+        <div class="logo-text">
+          <strong>Quiz Pro</strong>
+          <span>Ôn Thi Trắc Nghiệm Đa Môn</span>
+        </div>
+      </a>
+      <div class="nav-actions">
+        <button class="btn btn-primary" id="btnOpenImport" title="Thêm môn học mới">
+          ➕ Thêm môn học
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <h2>Học thông minh hơn,<br><span>ôn thi hiệu quả hơn</span></h2>
+    <p>Lưu tiến độ tự động, không mất dữ liệu. Thêm môn học mới chỉ bằng cách paste tài liệu.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="num" id="statSubjects">0</span><span class="lbl">Môn học</span></div>
+      <div class="hero-stat"><span class="num" id="statQuestions">0</span><span class="lbl">Câu hỏi</span></div>
+      <div class="hero-stat"><span class="num" id="statAnswered">0</span><span class="lbl">Đã trả lời</span></div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+    <div class="section-header">
+      <h3>📖 Môn học của bạn</h3>
+    </div>
+    <div class="subjects-grid" id="subjectsGrid">
+      <!-- Cards injected by JS -->
+    </div>
+  </div>
+
+  <!-- ===== Import Modal ===== -->
+  <div class="modal-overlay" id="importOverlay">
+    <div class="modal-box" id="importBox">
+      <!-- Stepper -->
+      <div class="stepper" id="stepperUI">
+        <div class="step active" id="step1-dot"><div class="step-dot">1</div><div class="step-label">Tên môn</div></div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2-dot"><div class="step-dot">2</div><div class="step-label">Nhập liệu</div></div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3-dot"><div class="step-dot">3</div><div class="step-label">Xem trước</div></div>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- STEP 1: Config -->
+        <div id="stepConfig">
+          <div class="modal-title">⚙️ Thông tin môn học</div>
+          <div class="modal-sub">Nhập tên cho môn học mới.</div>
+
+          <div class="field">
+            <label>Tên môn học</label>
+            <input type="text" id="cfgName" placeholder="VD: Hệ Điều Hành, Mạng Máy Tính..." autofocus>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="closeImportModal()">Hủy</button>
+            <div class="modal-actions-right" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary" id="btnCreateEmptySubject" onclick="saveEmptySubject()">⚡ Tạo môn trống (thêm câu sau)</button>
+              <button type="button" class="btn btn-primary" onclick="goToStep(2)">Nhập câu hỏi ngay →</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Import -->
+        <div id="stepImport" style="display:none;">
+          <div class="modal-title">📥 Nhập dữ liệu câu hỏi</div>
+          <div class="modal-sub">Paste văn bản từ tài liệu hoặc upload file JSON.</div>
+
+          <div class="import-tabs">
+            <div class="import-tab active" id="tabPaste" onclick="switchImportTab('paste')">📋 Paste văn bản</div>
+            <div class="import-tab" id="tabUpload" onclick="switchImportTab('upload')">📁 Upload JSON</div>
+          </div>
+
+          <!-- Paste pane -->
+          <div class="import-pane active" id="panePaste">
+            <div class="format-hint">
+              <strong>📖 Định dạng hỗ trợ — paste theo 1 trong 2 dạng:</strong>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:0.5rem;">
+                <div>
+                  <code>Câu 1: Nội dung câu hỏi?</code><br>
+                  <code>A. Đáp án A</code><br>
+                  <code>B. Đáp án B</code><br>
+                  <code>C. Đáp án C</code><br>
+                  <code>D. Đáp án D</code><br>
+                  <code>Đáp án: B</code>
+                </div>
+                <div>
+                  <code>1. Nội dung câu hỏi?</code><br>
+                  <code>a) Đáp án A</code><br>
+                  <code>b) Đáp án B</code><br>
+                  <code>c) Đáp án C</code><br>
+                  <code>d) Đáp án D</code><br>
+                  <code>ĐA: b</code>
+                </div>
+              </div>
+            </div>
+            <textarea class="paste-area" id="pasteArea" placeholder="Dán nội dung tài liệu tại đây..."></textarea>
+          </div>
+
+          <!-- Upload pane -->
+          <div class="import-pane" id="paneUpload">
+            <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+              <input type="file" id="fileInput" accept=".json,application/json" onchange="handleFileUpload(event)">
+              <div class="dz-icon">📂</div>
+              <p>Kéo thả hoặc click để chọn file JSON</p>
+              <span>Hỗ trợ file .json / .JSON (dạng mảng [...] hoặc { questions: [...] })</span>
+            </div>
+            <div id="uploadStatus" style="margin-top:0.75rem; font-size:0.85rem; color:var(--text-muted); display:none;"></div>
+          </div>
+
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="goToStep(1)">← Quay lại</button>
+            <div class="modal-actions-right">
+              <button class="btn btn-primary" onclick="parseAndPreview()">🔍 Phân tích & Xem trước</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Preview -->
+        <div id="stepPreview" style="display:none;">
+          <div class="modal-title">👁️ Xem trước kết quả</div>
+          <div class="modal-sub">Kiểm tra câu hỏi đã được parse đúng chưa trước khi lưu.</div>
+
+          <div class="preview-summary" id="previewSummary"></div>
+
+          <div class="preview-list" id="previewList"></div>
+
+          <div class="modal-actions">
+            <button class="btn btn-ghost" onclick="goToStep(2)">← Chỉnh lại</button>
+            <div class="modal-actions-right">
+              <button class="btn btn-primary" id="btnSaveSubject" onclick="saveSubject()">💾 Lưu môn học</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /modal-body -->
+    </div>
+  </div>
+
+  <!-- Delete Confirm Modal -->
+  <div class="delete-overlay" id="deleteOverlay">
+    <div class="delete-box">
+      <h3>🗑️ Xóa môn học</h3>
+      <p id="deleteMsg">Bạn có chắc muốn xóa môn học này? Toàn bộ tiến độ sẽ bị mất vĩnh viễn.</p>
+      <div class="delete-actions">
+        <button class="btn btn-ghost" onclick="closeDeleteModal()">Hủy</button>
+        <button class="btn btn-danger" id="btnConfirmDelete">Xóa vĩnh viễn</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rename Modal -->
+  <div class="delete-overlay" id="renameOverlay">
+    <div class="delete-box">
+      <h3>✏️ Đổi tên môn học</h3>
+      <p id="renameDesc" style="color:var(--text-muted);font-size:0.92rem;margin-bottom:0.75rem;"></p>
+      <input id="renameInput" type="text" class="form-input"
+             placeholder="Nhập tên mới..."
+             style="width:100%;margin-bottom:1rem;"
+             onkeydown="if(event.key==='Enter')confirmRename();if(event.key==='Escape')closeRenameModal();"/>
+      <div class="delete-actions">
+        <button class="btn btn-ghost" onclick="closeRenameModal()">Hủy</button>
+        <button class="btn btn-primary" id="btnConfirmRename" onclick="confirmRename()">💾 Lưu tên mới</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="dashboard-toast"></div>
+
+  <!-- Built-in KTMT check -->
+  <script src="questions_data.js"></script>
+  <script src="nmmmh_legacy_visual_fixes.js"></script>
+  <!-- NMMMH Đề 1 seed data -->
+  <script src="nmmmh_de1_data.js"></script>
+  <!-- NMMMH Đề 2 seed data -->
+  <script src="nmmmh_de2_data.js"></script>
+  <!-- NMMMH Đề 3 seed data -->
+  <script src="nmmmh_de3_data.js"></script>
+    <!-- NMMMH Đề 4 seed data -->
+    <script src="nmmmh_de4_data.js"></script>
+    <!-- NMMMH verified answer updates -->
+    <script src="nmmmh_answer_updates.js"></script>
+    <!-- NMMMH midterm seed data -->
+    <script src="nmmmh_midterm_data.js"></script>
+    <!-- NMMMH Đề 5 seed data -->
+    <script src="nmmmh_de5_data.js"></script>
+    <!-- NMMMH Đề 6 seed data -->
+    <script src="nmmmh_de6_data.js"></script>
+    <!-- NMMMH Đề 7 seed data -->
+    <script src="nmmmh_de7_data.js"></script>
+    <!-- NMMMH Đề 8 seed data -->
+    <script src="nmmmh_de8_data.js"></script>
+    <!-- NMMMH final-exam seed data -->
+    <script src="nmmmh_final_data.js"></script>
+
+  <script>
+    // ===== Config =====
+    let currentStep   = 1; // 1=config, 2=import, 3=preview
+    let parsedQuestions = [];
+    let uploadedJSON    = null;
+    let activeImportTab = 'paste';
+    let pendingDeleteId = null;
+
+    // ===== DB =====
+    const DB = {
+      db: null,
+      async open() {
+        return new Promise((res, rej) => {
+          const req = indexedDB.open('QuizAppDB', 2);
+          req.onupgradeneeded = e => {
+            const db = e.target.result;
+            ['subjects','questions','progress','settings'].forEach(s => {
+              if (!db.objectStoreNames.contains(s)) {
+                const kp = s === 'settings' ? 'key' : (s === 'questions' || s === 'progress' ? 'subjectId' : 'id');
+                db.createObjectStore(s, { keyPath: kp });
+              }
+            });
+          };
+          req.onsuccess = e => { this.db = e.target.result; res(); };
+          req.onerror   = rej;
+        });
+      },
+      async getAll(store) { return new Promise((res,rej) => { const req=this.db.transaction(store,'readonly').objectStore(store).getAll(); req.onsuccess=()=>res(req.result); req.onerror=rej; }); },
+      async get(store, key) { return new Promise((res,rej) => { const req=this.db.transaction(store,'readonly').objectStore(store).get(key); req.onsuccess=()=>res(req.result); req.onerror=rej; }); },
+      async put(store, val) { return new Promise((res,rej) => { const req=this.db.transaction(store,'readwrite').objectStore(store).put(val); req.onsuccess=res; req.onerror=rej; }); },
+      async delete(store, key) { return new Promise((res,rej) => { const req=this.db.transaction(store,'readwrite').objectStore(store).delete(key); req.onsuccess=res; req.onerror=rej; }); }
+    };
+
+    // ===== Init =====
+    async function init() {
+      await DB.open();
+
+      // Ensure KTMT built-in exists in subjects store
+      if (typeof QUESTIONS_DATA !== 'undefined') {
+        let ktmt = await DB.get('subjects','ktmt');
+        if (!ktmt) {
+          ktmt = { id:'ktmt', name:'Kiến Trúc Máy Tính', icon:'💻', color:'#6366f1', builtIn:true, questionCount:QUESTIONS_DATA.length, createdAt: Date.now() };
+          await DB.put('subjects', ktmt);
+        } else {
+          ktmt.questionCount = QUESTIONS_DATA.length;
+          await DB.put('subjects', ktmt);
+        }
+      }
+
+      // Auto-seed NMMMH Batches
+      await seedNmmmh();
+      await backfillNmmmhSourceSets();
+      await applyNmmmhAnswerUpdates();
+
+      // Cập nhật an toàn cách trình bày & sơ đồ ảnh NMMMH trong IndexedDB
+      await safeUpdateNmmmhQuestions();
+      await applyNmmmhLegacyVisualFixesToDB();
+
+      await renderDashboard();
+      setupDropZone();
+    }
+
+    // ===== Safe Presentation & Image Update for NMMMH =====
+    async function safeUpdateNmmmhQuestions() {
+      const sid = 'nmmmh';
+      const qRecord = await DB.get('questions', sid);
+      if (!qRecord || !Array.isArray(qRecord.data)) return;
+      let changed = false;
+
+      const updates = {
+        'nmmmh_2': {
+          image: 'images/nmmmh/q_shiftrows.png',
+          cleanPrompt: 'Cho biết giá trị của x₁₂ và x₃₁ sau khi thực hiện bước ShiftRows (xem sơ đồ minh họa).',
+          detectOld: p => p && (p.includes('Đáp án gồm') || p.includes('Ma trận đầu vào'))
+        },
+        'nmmmh_3': {
+          cleanPrompt: 'Tính xtime(39) theo hệ hexa.',
+          detectOld: p => p && p.includes('Đáp án viết dưới dạng')
+        },
+        'nmmmh_4': {
+          image: 'images/nmmmh/q_subbyte.png',
+          cleanPrompt: 'Trong hệ mật AES với bảng Sbox và sơ đồ SubByte (xem ảnh), hãy tìm giá trị của s₁₃.',
+          detectOld: p => p && p.includes('Ma trận: hàng 0:')
+        },
+        'nmmmh_5': {
+          image: 'images/nmmmh/q_mixcolumns.png',
+          cleanPrompt: 'Tính giá trị của x₁₃ trong vòng tính MixColumns của hệ mật AES (xem sơ đồ phép nhân ma trận trong ảnh).',
+          detectOld: p => p && p.includes('Xem ảnh để biết')
+        },
+        'nmmmh_7': {
+          image: 'images/nmmmh/q_spn.png',
+          cleanPrompt: 'Đâu là kiến trúc mạng SPN? (Xem 4 sơ đồ được đánh số (1), (2), (3), (4) trong ảnh)',
+          detectOld: p => p && p.includes('(1),(2),(3),(4)')
+        },
+        'nmmmh_10': {
+          image: 'images/nmmmh/q_invshiftrows.png',
+          cleanPrompt: 'Hãy cho biết giá trị của x₂₃ và x₀₁ sau khi thực hiện InvShiftRows (xem sơ đồ minh họa).',
+          detectOld: p => p && (p.includes('Đáp án: x₂₃, x₀₁') || p.includes('Ma trận đầu vào:'))
+        },
+        'nmmmh_11': {
+          cleanPrompt: 'Tính xtime(A5) theo hệ hexa.',
+          detectOld: p => p && p.includes('Đáp án viết dưới dạng')
+        },
+        'nmmmh_16': {
+          image: 'images/nmmmh/q_addroundkey.png',
+          cleanPrompt: 'Trong quá trình mở rộng khóa của hệ mật AES với bản rõ và khóa như hình vẽ, kết quả của AddRoundKey là ma trận trạng thái X. Hãy tính x₂₀.',
+          detectOld: p => p && p.startsWith('Bản rõ: 1B')
+        },
+        'nmmmh_20': {
+          cleanPrompt: 'Trong AES, tính 42H × 18H trên GF(2⁸) với m(x) = x⁸ + x⁴ + x³ + x + 1.',
+          detectOld: p => p && p.includes('Đáp án dạng hexa')
+        }
+      };
+
+      qRecord.data.forEach(q => {
+        const u = updates[q.id];
+        if (u) {
+          if (u.image && q.image !== u.image) {
+            q.image = u.image;
+            changed = true;
+          }
+          if (u.cleanPrompt && u.detectOld(q.prompt) && q.prompt !== u.cleanPrompt) {
+            q.prompt = u.cleanPrompt;
+            changed = true;
+          }
+        }
+      });
+
+      if (changed) {
+        await DB.put('questions', qRecord);
+        console.log('[NMMMH] Đã chuẩn hóa cách trình bày và sơ đồ ảnh cho các câu hỏi trong IndexedDB.');
+      }
+    }
+
+    // Chuyển đúng ảnh cũ còn lưu trong IndexedDB sang ảnh đã cắt. Điều kiện khớp
+    // chính xác đường dẫn ảnh cũ nên không động vào ảnh/câu người dùng đã tự sửa.
+    async function applyNmmmhLegacyVisualFixesToDB() {
+      if (typeof applyNmmmhLegacyVisualFixes !== 'function') return;
+      const record = await DB.get('questions', 'nmmmh');
+      if (applyNmmmhLegacyVisualFixes(record)) await DB.put('questions', record);
+    }
+
+    // ===== Helper Seed Batch =====
+    async function seedSubjectBatch(batchData, settingKey, label) {
+      if (!batchData || !Array.isArray(batchData.questions)) return;
+      const alreadySeeded = await DB.get('settings', settingKey);
+      if (alreadySeeded) return;
+
+      const sid = batchData.subjectId || 'nmmmh';
+
+      // Tìm môn theo ID ổn định ('nmmmh'), không tìm bằng tên để người dùng đổi tên môn vẫn tìm đúng môn
+      let subj = await DB.get('subjects', sid);
+      if (!subj) {
+        subj = {
+          id: sid,
+          name: batchData.subjectName || 'Nhập môn mật mã học',
+          icon: batchData.subjectIcon || '🔐',
+          color: batchData.subjectColor || '#0ea5e9',
+          builtIn: false,
+          questionCount: 0,
+          createdAt: Date.now()
+        };
+      }
+
+      // Lấy danh sách câu hỏi hiện tại, giữ nguyên câu cũ và bản sửa thủ công
+      const existing = await DB.get('questions', sid);
+      const existingQs = (existing && Array.isArray(existing.data)) ? existing.data : [];
+      const existingIds = new Set(existingQs.map(q => String(q.id)));
+
+      // Chỉ thêm câu chưa có (chống trùng theo id). Nguồn đề là tiêu chí phân loại
+      // hiển thị; vẫn giữ chapter trong dữ liệu để không phá các bản chỉnh sửa cũ.
+      const sourceSet = batchData.sourceSet || label;
+      const newQs = batchData.questions
+        .filter(q => !existingIds.has(String(q.id)))
+        .map(q => ({ ...q, source_set: q.source_set || sourceSet }));
+      const merged = existingQs.concat(newQs);
+
+      subj.questionCount = merged.length;
+      await DB.put('subjects', subj);
+      await DB.put('questions', { subjectId: sid, data: merged });
+
+      // Đánh dấu đã seed batch này vào settings (không dùng chung key của batch khác)
+      await DB.put('settings', { key: settingKey, value: true, seededAt: Date.now() });
+
+      if (newQs.length > 0) {
+        console.log(`[NMMMH Seed] Đã thêm ${newQs.length} câu hỏi ${label} vào môn "${subj.name}".`);
+      }
+    }
+
+    // ===== Seed NMMMH Batches =====
+    async function seedNmmmh() {
+      // Đề 1 (key: nmmmh_seed_v1)
+      if (typeof NMMMH_DE1_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE1_DATA, 'nmmmh_seed_v' + (NMMMH_DE1_DATA.seedVersion || 1), 'Đề 1');
+      }
+      // Đề 2 (key: nmmmh_seed_v2)
+      if (typeof NMMMH_DE2_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE2_DATA, NMMMH_DE2_DATA.batchKey || 'nmmmh_seed_v2', 'Đề 2');
+      }
+      // Đề 3 (key: nmmmh_seed_v3)
+      if (typeof NMMMH_DE3_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE3_DATA, NMMMH_DE3_DATA.batchKey || 'nmmmh_seed_v3', 'Đề 3');
+      }
+      // Đề 4 (key: nmmmh_seed_v4)
+      if (typeof NMMMH_DE4_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE4_DATA, NMMMH_DE4_DATA.batchKey || 'nmmmh_seed_v4', 'Đề 4');
+      }
+      if (typeof NMMMH_MIDTERM_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_MIDTERM_DATA, NMMMH_MIDTERM_DATA.batchKey || 'nmmmh_midterm_seed_v1', 'Đề thi giữa kì');
+      }
+      if (typeof NMMMH_DE5_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE5_DATA, NMMMH_DE5_DATA.batchKey || 'nmmmh_seed_v5', 'Đề 5');
+      }
+      if (typeof NMMMH_DE6_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE6_DATA, NMMMH_DE6_DATA.batchKey || 'nmmmh_seed_v6', 'Đề 6');
+      }
+      if (typeof NMMMH_DE7_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE7_DATA, NMMMH_DE7_DATA.batchKey || 'nmmmh_seed_v7', 'Đề 7');
+      }
+      if (typeof NMMMH_DE8_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_DE8_DATA, NMMMH_DE8_DATA.batchKey || 'nmmmh_seed_v8', 'Đề 8');
+      }
+      if (typeof NMMMH_FINAL_DATA !== 'undefined') {
+        await seedSubjectBatch(NMMMH_FINAL_DATA, NMMMH_FINAL_DATA.batchKey || 'nmmmh_seed_final_v1', 'Đề thi NMMMH');
+      }
+    }
+
+    function inferNmmmhSourceSet(questionId) {
+      const id = String(questionId || '');
+      if (/^nmmmh_mid_/i.test(id)) return 'Đề giữa kì';
+      if (/^nmmmh_final_/i.test(id)) return 'Đề cuối kì';
+      const match = id.match(/^nmmmh_d([1-8])_/i);
+      if (match) return `Đề ${match[1]}`;
+      // Các câu Đề 1 đời đầu dùng mã nmmmh_1, nmmmh_2, ...
+      if (/^nmmmh_\d+$/i.test(id)) return 'Đề 1';
+      return '';
+    }
+
+    // Chỉ bổ sung trường nguồn còn thiếu cho dữ liệu đã có trong trình duyệt.
+    // Không ghi đè nguồn do người dùng đã đặt và không thay đổi nội dung câu hỏi.
+    async function backfillNmmmhSourceSets() {
+      const key = 'nmmmh_source_set_backfill_v1';
+      if (await DB.get('settings', key)) return;
+      const record = await DB.get('questions', 'nmmmh');
+      if (!record || !Array.isArray(record.data)) return;
+      let changed = 0;
+      record.data.forEach(q => {
+        if (q) {
+          const sourceSet = inferNmmmhSourceSet(q.id);
+          const isOldAutoLabel = (sourceSet === 'Đề giữa kì' && q.source_set === 'Đề thi giữa kì') ||
+            (sourceSet === 'Đề cuối kì' && q.source_set === 'Đề thi NMMMH');
+          if (sourceSet && (!q.source_set || isOldAutoLabel)) { q.source_set = sourceSet; changed++; }
+        }
+      });
+      if (changed) await DB.put('questions', record);
+      await DB.put('settings', { key, value: true, updatedAt: Date.now(), changed });
+    }
+
+    // Bổ sung đáp án vào đúng câu còn trống; tuyệt đối không ghi đè đáp án người dùng đã sửa.
+    async function applyNmmmhAnswerUpdates() {
+      if (typeof NMMMH_ANSWER_UPDATES === 'undefined' || !NMMMH_ANSWER_UPDATES.answers) return;
+      const key = NMMMH_ANSWER_UPDATES.batchKey || 'nmmmh_answer_updates_v1';
+      const alreadyApplied = await DB.get('settings', key);
+      if (alreadyApplied) return;
+
+      const record = await DB.get('questions', 'nmmmh');
+      if (!record || !Array.isArray(record.data)) return;
+      let changed = 0;
+      record.data.forEach(q => {
+        const answer = NMMMH_ANSWER_UPDATES.answers[String(q.id)];
+        const hasCurrentAnswer = Array.isArray(q.answer) ? q.answer.length > 0 : Boolean(q.answer && String(q.answer).trim());
+        if (answer && !hasCurrentAnswer) {
+          q.answer = answer;
+          q.needs_check = false;
+          q.answer_source = 'Đã đối chiếu';
+          changed++;
+        }
+      });
+      if (changed) await DB.put('questions', record);
+      await DB.put('settings', { key, value: true, updatedAt: Date.now(), changed });
+      console.log(`[NMMMH] Đã bổ sung ${changed} đáp án đã đối chiếu.`);
+    }
+
+    async function renderDashboard() {
+      const subjects = await DB.getAll('subjects');
+      subjects.sort((a,b) => (a.builtIn?0:1) - (b.builtIn?0:1) || (a.createdAt||0) - (b.createdAt||0));
+
+      const grid = document.getElementById('subjectsGrid');
+      let totalQ=0, totalAnswered=0;
+
+      let html = '';
+      for (const s of subjects) {
+        const progress = await DB.get('progress', s.id);
+        const answered = progress?.userAnswers ? Object.values(progress.userAnswers).filter(a => Array.isArray(a) ? a.length : Boolean(a)).length : 0;
+        const correct  = progress?.userAnswers
+          ? (() => {
+              if (s.builtIn && typeof QUESTIONS_DATA!=='undefined') {
+                return Object.entries(progress.userAnswers).filter(([id,a]) => {
+                  const q=QUESTIONS_DATA.find(q=>q.id==id);
+                  const selected = Array.isArray(a) ? a.map(x=>String(x).toLowerCase()).sort() : [String(a||'').toLowerCase()].filter(Boolean);
+                  const correct = Array.isArray(q?.answer) ? q.answer.map(x=>String(x).toLowerCase()).sort() : [String(q?.answer||'').toLowerCase()].filter(Boolean);
+                  return q && selected.length === correct.length && selected.every((x,i) => x === correct[i]);
+                }).length;
+              }
+              return progress.correct||0;
+            })()
+          : 0;
+        const qCount = s.questionCount || 0;
+        const pct = qCount>0 ? Math.round((answered/qCount)*100) : 0;
+        const acc = answered>0 ? Math.round((correct/answered)*100) : 0;
+        totalQ += qCount; totalAnswered += answered;
+
+        html += `
+          <div class="subject-card" style="--card-color:${s.color||'#6366f1'};">
+            <div class="card-top">
+              <div class="card-icon">${s.icon||'📚'}</div>
+              <div class="card-top-right">
+                <span class="card-badge ${s.builtIn?'builtin':''}">${s.builtIn?'Mặc định':'Đã thêm'}</span>
+                <button type="button" class="btn-card-delete" onclick="openDeleteModal('${escapeHTML(s.id)}','${escapeHTML(s.name)}', event)" title="Xóa môn ${escapeHTML(s.name)}">🗑️</button>
+              </div>
+            </div>
+            <div>
+              <div class="card-name">${escapeHTML(s.name)}</div>
+              <div class="card-count">${qCount} câu hỏi</div>
+            </div>
+            <div class="card-progress">
+              <div class="progress-row">
+                <span class="answered">${answered}/${qCount} đã trả lời (${pct}%)</span>
+                <span class="accuracy">${answered>0?acc+'% chính xác':''}</span>
+              </div>
+              <div class="progress-track"><div class="progress-fill" style="width:${pct}%; background:${s.color||'var(--primary)'};"></div></div>
+            </div>
+            <div class="card-actions">
+              <a href="quiz.html?subject=${encodeURIComponent(s.id)}" class="btn btn-primary card-btn">📖 Vào ôn tập</a>
+              <a href="manage.html?subject=${encodeURIComponent(s.id)}" class="btn btn-ghost card-btn">⚙️ Quản lý câu hỏi</a>
+              <button type="button" class="btn btn-ghost card-btn" style="font-size:0.82rem;padding:0.3rem 0.7rem;" onclick="openRenameModal('${escapeHTML(s.id)}','${escapeHTML(s.name)}',event)" title="Đổi tên môn học">✏️ Sửa tên</button>
+            </div>
+          </div>`;
+      }
+
+      html += `<div class="add-card" onclick="openImportModal()"><div class="add-card-icon">➕</div><p>Thêm môn học mới</p><span>Paste tài liệu hoặc upload JSON</span></div>`;
+
+      if (subjects.length === 0) {
+        html = `<div class="no-subjects"><div class="ns-icon">📭</div><h3>Chưa có môn học nào</h3><p>Nhấn "Thêm môn học" để bắt đầu.</p></div>` + html;
+      }
+
+      grid.innerHTML = html;
+      document.getElementById('statSubjects').textContent = subjects.length;
+      document.getElementById('statQuestions').textContent = totalQ.toLocaleString();
+      document.getElementById('statAnswered').textContent = totalAnswered.toLocaleString();
+    }
+
+    function manageSubject(id) {
+      window.location.href = 'manage.html?subject=' + encodeURIComponent(id);
+    }
+
+    // ===== Import Modal =====
+    function openImportModal() {
+      document.getElementById('importOverlay').classList.add('show');
+      goToStep(1);
+      document.getElementById('cfgName').value = '';
+    }
+
+    function closeImportModal() {
+      document.getElementById('importOverlay').classList.remove('show');
+      parsedQuestions = []; uploadedJSON = null;
+      document.getElementById('pasteArea').value = '';
+      document.getElementById('uploadStatus').style.display = 'none';
+      document.getElementById('uploadStatus').textContent = '';
+    }
+
+    function goToStep(n) {
+      currentStep = n;
+      ['stepConfig','stepImport','stepPreview'].forEach((id,i) => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = ((i+1)===n ? 'block' : 'none');
+      });
+      [1,2,3].forEach(i => {
+        const dot  = document.getElementById(`step${i}-dot`);
+        const line = document.getElementById(`line${i}`);
+        if (dot) {
+          dot.className  = 'step' + (n===i ? ' active' : n>i ? ' done' : '');
+          dot.querySelector('.step-dot').textContent = n>i ? '✓' : i;
+        }
+        if (line) line.className = 'step-line' + (n>i ? ' done' : '');
+      });
+    }
+
+    // ===== Import Tab =====
+    function switchImportTab(tab) {
+      activeImportTab = tab;
+      document.getElementById('tabPaste').classList.toggle('active',  tab==='paste');
+      document.getElementById('tabUpload').classList.toggle('active', tab==='upload');
+      document.getElementById('panePaste').classList.toggle('active',  tab==='paste');
+      document.getElementById('paneUpload').classList.toggle('active', tab==='upload');
+    }
+
+    // ===== File Upload =====
+    function setupDropZone() {
+      const dz = document.getElementById('dropZone');
+      dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+      dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+      dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('drag-over'); const f=e.dataTransfer.files[0]; if(f) loadFile(f); });
+    }
+
+    function handleFileUpload(e) {
+      const f = e.target.files[0];
+      if (f) loadFile(f);
+      e.target.value = ''; // Reset so selecting the same file triggers onchange
+    }
+
+    function normalizeJSONQuestions(raw) {
+      let data = raw;
+      if (typeof raw === 'string') {
+        const cleaned = raw.replace(/^\uFEFF/, '').trim();
+        data = JSON.parse(cleaned);
+      }
+
+      let arr = null;
+      if (Array.isArray(data)) {
+        arr = data;
+      } else if (data && typeof data === 'object') {
+        const candidates = ['questions', 'data', 'items', 'quiz', 'list', 'cau_hoi'];
+        for (const k of candidates) {
+          if (Array.isArray(data[k])) {
+            arr = data[k];
+            break;
+          }
+        }
+        if (!arr) {
+          const values = Object.values(data);
+          if (values.length > 0 && typeof values[0] === 'object' && (values[0].prompt || values[0].question || values[0].options)) {
+            arr = values;
+          }
+        }
+      }
+
+      if (!arr) {
+        throw new Error('Dữ liệu JSON không chứa mảng câu hỏi (cần dạng mảng [...] hoặc object { questions: [...] })');
+      }
+      if (arr.length === 0) {
+        throw new Error('Danh sách câu hỏi trong file JSON đang rỗng');
+      }
+
+      const optKeys = ['a', 'b', 'c', 'd'];
+      return arr.map((q, i) => {
+        if (!q || typeof q !== 'object') return null;
+
+        const qType = q.type === 'fill_blank' ? 'fill_blank' : 'choice';
+        const prompt = String(q.prompt || q.question || q.content || q.title || '').trim();
+
+        // Normalize options
+        const rawOpts = q.options || q.answers || q.choices || [];
+        let opts = [];
+        if (qType !== 'fill_blank') {
+          if (Array.isArray(rawOpts)) {
+            opts = rawOpts.map((item, oi) => {
+              const fallbackId = optKeys[oi] || String(oi);
+              if (item && typeof item === 'object') {
+                const oid = String(item.id || item.key || item.label || fallbackId).trim().toLowerCase();
+                const otext = String(item.text || item.content || item.value || item.title || '').trim();
+                const oimg = item.image || null;
+                const oimgData = item.image_data || item.imageData || null;
+                return { id: oid, text: otext, image: oimg, image_data: oimgData };
+              }
+              return { id: fallbackId, text: String(item).trim(), image: null, image_data: null };
+            });
+          } else if (rawOpts && typeof rawOpts === 'object') {
+            opts = Object.entries(rawOpts).map(([k, v]) => ({
+              id: String(k).trim().toLowerCase(),
+              text: String(v).trim(),
+              image: null,
+              image_data: null
+            }));
+          }
+        }
+
+        // Normalize answer
+        const rawAns = q.answer !== undefined ? q.answer : (q.correct !== undefined ? q.correct : (q.correct_answer !== undefined ? q.correct_answer : (q.key !== undefined ? q.key : '')));
+        let ans = '';
+        if (qType === 'fill_blank') {
+          ans = rawAns !== undefined && rawAns !== null ? String(rawAns).trim() : '';
+        } else {
+          if (typeof rawAns === 'number') {
+            if (rawAns >= 0 && rawAns < optKeys.length) ans = optKeys[rawAns];
+          } else {
+            const ansStr = String(rawAns || '').trim().toLowerCase();
+            if (/^[0-3]$/.test(ansStr)) {
+              ans = optKeys[parseInt(ansStr, 10)];
+            } else if (['a', 'b', 'c', 'd'].includes(ansStr)) {
+              ans = ansStr;
+            } else if (ansStr) {
+              const found = opts.find(o => o.text && o.text.trim().toLowerCase() === ansStr);
+              if (found) ans = found.id;
+              else ans = ansStr;
+            }
+          }
+        }
+
+        return {
+          id: q.id || (i + 1),
+          type: qType,
+          num: String(q.num || q.id || (i + 1)),
+          chapter: q.chapter || 1,
+          chapter_name: q.chapter_name || q.chapterName || '',
+          page: q.page || null,
+          prompt,
+          image: q.image || null,
+          image_data: q.image_data || q.imageData || null,
+          options: opts,
+          answer: ans,
+          source_image: q.source_image || q.sourceImage || q.source || null,
+          needs_check: Boolean(q.needs_check || q.check_required),
+          note: q.note || null
+        };
+      }).filter(Boolean);
+    }
+
+    function loadFile(file) {
+      const st = document.getElementById('uploadStatus');
+      if (!file.name.toLowerCase().endsWith('.json')) {
+        st.style.display = 'block';
+        st.style.color = 'var(--danger)';
+        st.textContent = '❌ Lỗi: Chỉ chấp nhận file có đuôi .json (tên file: ' + escapeHTML(file.name) + ')';
+        showToast('❌ Chỉ chấp nhận file .json', 'error');
+        uploadedJSON = null;
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const questions = normalizeJSONQuestions(e.target.result);
+          uploadedJSON = questions;
+
+          st.style.display = 'block';
+          st.style.color = 'var(--success)';
+          st.textContent = `✅ Đã tải: ${file.name} — ${questions.length} câu hỏi`;
+          showToast(`✅ Đã tải file: ${questions.length} câu hỏi`);
+        } catch (err) {
+          st.style.display = 'block';
+          st.style.color = 'var(--danger)';
+          st.textContent = `❌ Lỗi file JSON: ${err.message}`;
+          showToast(`❌ File JSON không hợp lệ: ${err.message}`, 'error');
+          uploadedJSON = null;
+        }
+      };
+      reader.onerror = () => {
+        st.style.display = 'block';
+        st.style.color = 'var(--danger)';
+        st.textContent = '❌ Không thể đọc file. Vui lòng thử lại.';
+        showToast('❌ Lỗi khi đọc file', 'error');
+        uploadedJSON = null;
+      };
+      reader.readAsText(file, 'UTF-8');
+    }
+
+    // ===== Unicode-safe Multi-line Parser =====
+    function parseTextQuestions(text) {
+      if (!text || !text.trim()) return [];
+
+      // Normalize line breaks only; NEVER strip, normalize or filter Unicode characters
+      const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+      // Split questions by question markers at start of line
+      const qSplitRegex = /(?:^|\n)(?=(?:(?:câu|bài|question)\s*\d+[\s:.\-–—\)]|\[\s*(?:câu|bài|question)?\s*\d+\s*\]|^\s*\d+[\.\)\/]\s+))/im;
+      let rawBlocks = normalized.split(qSplitRegex);
+      if (rawBlocks.length <= 1) {
+        rawBlocks = normalized.split(/\n\s*\n+/);
+      }
+
+      const blocks = rawBlocks.map(b => b.trim()).filter(b => b.length > 5);
+      const questions = [];
+
+      const ansLineRegex = /(?:^|\n)\s*(?:đáp\s*án|đ\/a|đa|answer|key|chọn(?:\s*đáp\s*án)?|chọn)\s*[:= \-–—]*\s*([*\[(]?\s*[A-Da-d]\s*[*)\]]?)/i;
+      const optMarkerRegex = /(?:^|\n|\s{2,}|\t)\s*(\*?\s*(?:\[|\()?([A-Da-d])(?:\]|\))?[\.\:\)\/\-–—]?\*?)\s+/g;
+
+      blocks.forEach((block, idx) => {
+        try {
+          let answer = null;
+          let blockForOpts = block;
+
+          const ansMatch = block.match(ansLineRegex);
+          if (ansMatch) {
+            const rawAns = ansMatch[1];
+            const cleanAns = rawAns.match(/[A-Da-d]/);
+            if (cleanAns) answer = cleanAns[0].toLowerCase();
+            blockForOpts = block.slice(0, ansMatch.index).trim();
+          }
+
+          // Search option markers in sequence
+          const matches = [];
+          let m;
+          optMarkerRegex.lastIndex = 0;
+          while ((m = optMarkerRegex.exec(blockForOpts)) !== null) {
+            matches.push({
+              full: m[1].trim(),
+              letter: m[2].toLowerCase(),
+              index: m.index
+            });
+          }
+
+          const optPositions = {};
+          let asteriskAnswer = null;
+          let currentTarget = 'a';
+
+          for (const cand of matches) {
+            if (cand.letter === currentTarget) {
+              if (cand.full.includes('*')) {
+                asteriskAnswer = cand.letter;
+              }
+              const markerIdx = blockForOpts.indexOf(cand.full, cand.index);
+              optPositions[cand.letter] = {
+                start: markerIdx,
+                end: markerIdx + cand.full.length
+              };
+              if (currentTarget === 'a') currentTarget = 'b';
+              else if (currentTarget === 'b') currentTarget = 'c';
+              else if (currentTarget === 'c') currentTarget = 'd';
+              else if (currentTarget === 'd') break;
+            }
+          }
+
+          if (optPositions.a && optPositions.b && optPositions.c && optPositions.d) {
+            const rawPrompt = blockForOpts.slice(0, optPositions.a.start).trim();
+            const prompt = rawPrompt.replace(/^(?:(?:câu|bài|question)\s*\d+|\[\s*(?:câu|bài|question)?\s*\d+\s*\]|\d+)\s*[:.\-–—\)\/]*\s*/i, '').trim();
+
+            const optA = blockForOpts.slice(optPositions.a.end, optPositions.b.start).trim();
+            const optB = blockForOpts.slice(optPositions.b.end, optPositions.c.start).trim();
+            const optC = blockForOpts.slice(optPositions.c.end, optPositions.d.start).trim();
+            const optD = blockForOpts.slice(optPositions.d.end).trim();
+
+            if (!answer && asteriskAnswer) {
+              answer = asteriskAnswer;
+            }
+
+            const numMatch = rawPrompt.match(/^(?:câu|bài|question)?\s*(\d+)/i);
+            const qNum = numMatch ? numMatch[1] : String(idx + 1);
+
+            if (prompt) {
+              questions.push({
+                id: idx + 1,
+                num: qNum,
+                chapter: 1,
+                chapter_name: '',
+                page: null,
+                prompt,
+                image: null,
+                image_data: null,
+                options: [
+                  { id: 'a', text: optA },
+                  { id: 'b', text: optB },
+                  { id: 'c', text: optC },
+                  { id: 'd', text: optD }
+                ],
+                answer: answer || ''
+              });
+            }
+          } else {
+            // Fallback: line-by-line parsing
+            const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+            if (lines.length >= 3) {
+              let optMap = {};
+              let promptLines = [];
+              let foundFirstOpt = false;
+              let lineAns = answer;
+
+              for (const line of lines) {
+                const optM = line.match(/^(\*?\s*(?:\[|\()?([a-dA-D])(?:\]|\))?[\.\:\)\/\-–—]?\*?)\s*(.+)/);
+                if (optM) {
+                  foundFirstOpt = true;
+                  const letKey = optM[2].toLowerCase();
+                  if (optM[1].includes('*')) lineAns = letKey;
+                  optMap[letKey] = optM[3].trim();
+                } else if (!foundFirstOpt) {
+                  promptLines.push(line);
+                } else {
+                  const ansM = line.match(ansLineRegex);
+                  if (ansM) {
+                    const cleanAns = ansM[1].match(/[A-Da-d]/);
+                    if (cleanAns) lineAns = cleanAns[0].toLowerCase();
+                  } else {
+                    const keys = Object.keys(optMap);
+                    if (keys.length > 0) {
+                      optMap[keys[keys.length - 1]] += '\n' + line;
+                    }
+                  }
+                }
+              }
+
+              let fallbackPrompt = promptLines.join('\n').replace(/^(?:(?:câu|bài|question)\s*\d+|\[\s*(?:câu|bài|question)?\s*\d+\s*\]|\d+)\s*[:.\-–—\)\/]*\s*/i, '').trim();
+              if (fallbackPrompt && optMap.a && optMap.b) {
+                const numMatch = promptLines[0]?.match(/^(?:câu|bài|question)?\s*(\d+)/i);
+                questions.push({
+                  id: idx + 1,
+                  num: numMatch ? numMatch[1] : String(idx + 1),
+                  chapter: 1,
+                  chapter_name: '',
+                  page: null,
+                  prompt: fallbackPrompt,
+                  image: null,
+                  image_data: null,
+                  options: ['a','b','c','d'].filter(k => optMap[k] !== undefined).map(k => ({ id: k, text: optMap[k] || '' })),
+                  answer: lineAns || ''
+                });
+              }
+            }
+          }
+        } catch (e) {
+          console.error('Lỗi khi parse câu hỏi block:', e);
+        }
+      });
+
+      return questions;
+    }
+
+    function parseAndPreview() {
+      const name = document.getElementById('cfgName').value.trim();
+      if (!name) {
+        showToast('⚠️ Vui lòng nhập tên môn học ở Bước 1 trước!', 'error');
+        goToStep(1);
+        return;
+      }
+
+      if (activeImportTab === 'upload') {
+        if (!uploadedJSON || uploadedJSON.length === 0) {
+          showToast('⚠️ Chưa có file JSON hợp lệ được tải lên!', 'error');
+          return;
+        }
+        parsedQuestions = uploadedJSON;
+      } else {
+        const text = document.getElementById('pasteArea').value;
+        if (!text.trim()) {
+          showToast('⚠️ Chưa có nội dung văn bản để phân tích!', 'error');
+          return;
+        }
+        parsedQuestions = parseTextQuestions(text);
+      }
+
+      if (parsedQuestions.length === 0) {
+        showToast('❌ Không nhận diện được câu hỏi nào. Vui lòng kiểm tra lại định dạng.', 'error');
+        return;
+      }
+
+      showPreview();
+      goToStep(3);
+    }
+
+    function showPreview() {
+      const total = parsedQuestions.length;
+      const isComplete = q => {
+        const hasPrompt = Boolean((q.prompt && q.prompt.trim()) || q.image || q.image_data);
+        if (!hasPrompt) return false;
+        if (q.type === 'fill_blank') return Boolean(q.answer && String(q.answer).trim());
+        const answerKeys = Array.isArray(q.answer) ? q.answer.filter(Boolean) : [q.answer].filter(Boolean);
+        return Boolean(q.options && q.options.length >= 2 && answerKeys.length);
+      };
+      const valid = parsedQuestions.filter(isComplete).length;
+
+      document.getElementById('previewSummary').innerHTML = `
+        <div class="preview-stat"><strong>${total}</strong>Câu được nhận diện</div>
+        <div class="preview-stat"><strong style="color:var(--success);">${valid}</strong>Câu hoàn chỉnh</div>
+        <div class="preview-stat"><strong style="color:var(--warning,#f59e0b);">${total-valid}</strong>Câu cần bổ sung / kiểm tra</div>
+      `;
+
+      document.getElementById('previewList').innerHTML = parsedQuestions.slice(0, 30).map((q, i) => {
+        const ok = isComplete(q);
+        const isFillBlank = q.type === 'fill_blank';
+        const errReasons = [];
+        if (!q.prompt && !q.image && !q.image_data) errReasons.push('Thiếu đề bài');
+        if (!isFillBlank && (!q.options || q.options.length < 2)) errReasons.push('Thiếu đáp án lựa chọn');
+        if (!(Array.isArray(q.answer) ? q.answer.length : q.answer)) errReasons.push('Chưa có đáp án đúng');
+        if (q.needs_check) errReasons.push('Cần kiểm tra lại');
+
+        const typeBadge = isFillBlank ? '<span style="color:#fbbf24;font-size:0.75rem;margin-left:0.35rem;font-weight:600;">[Điền khuyết]</span>' : '';
+        const sourceBadge = q.source_image ? `<span style="color:var(--text-muted);font-size:0.75rem;margin-left:0.35rem;">(${escapeHTML(q.source_image)})</span>` : '';
+
+        let ansLabel = '⚠️ Chưa có ĐA';
+        if (Array.isArray(q.answer) ? q.answer.length : q.answer) {
+          ansLabel = isFillBlank ? `ĐA: ${formatMathText(q.answer)}` : `Đáp án: ${escapeHTML((Array.isArray(q.answer) ? q.answer.join(', ') : q.answer).toUpperCase())}`;
+        }
+
+        return `<div class="preview-item ${!ok ? 'error' : ''}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:0.25rem;">
+            <div>
+              <span class="q-num">Câu ${q.num || i + 1}.</span>
+              ${typeBadge}
+              ${sourceBadge}
+            </div>
+            <span class="q-answer ${!(Array.isArray(q.answer) ? q.answer.length : q.answer) ? 'missing' : ''}">${ansLabel}</span>
+          </div>
+          <div class="preview-item-prompt">${formatMathText(q.prompt || '(Đề bài để trống hoặc xem ảnh minh họa)')}</div>
+          ${q.image || q.image_data ? `<div style="font-size:0.75rem;color:var(--primary);margin-top:0.2rem;">🖼️ Có hình ảnh đính kèm</div>` : ''}
+          ${!isFillBlank && q.options && q.options.length > 0 ? `
+            <div style="margin-top:0.4rem; font-size:0.78rem; color:var(--text-muted); display:grid; grid-template-columns:1fr 1fr; gap:0.25rem;">
+              ${q.options.slice(0, 4).map(o => `<div><strong style="color:${(Array.isArray(q.answer) ? q.answer : [q.answer]).map(a=>String(a).toLowerCase()).includes(String(o.id).toLowerCase()) ? 'var(--success)' : 'inherit'};">${o.id.toUpperCase()}.</strong> ${formatMathText((o.text || (o.image || o.image_data ? '[Hình ảnh]' : '')).slice(0, 45))}${o.text && o.text.length > 45 ? '…' : ''}</div>`).join('')}
+            </div>
+          ` : ''}
+          ${errReasons.length > 0 ? `<div style="margin-top:0.35rem; color:var(--danger); font-size:0.75rem; font-weight:600;">⚠️ ${errReasons.join(' • ')}</div>` : ''}
+        </div>`;
+      }).join('') + (parsedQuestions.length > 30 ? `<div style="text-align:center;padding:0.5rem;color:var(--text-muted);font-size:0.8rem;">...và ${parsedQuestions.length - 30} câu khác</div>` : '');
+    }
+
+    // ===== Save Subject (Empty) =====
+    async function saveEmptySubject() {
+      const name = document.getElementById('cfgName').value.trim();
+      if (!name) {
+        showToast('⚠️ Vui lòng nhập tên môn học!', 'error');
+        document.getElementById('cfgName').focus();
+        return;
+      }
+
+      const btn = document.getElementById('btnCreateEmptySubject');
+      if (btn) {
+        btn.textContent = '⏳ Đang tạo...';
+        btn.disabled = true;
+      }
+
+      const id = 'subj_' + Date.now();
+      await DB.put('subjects', {
+        id,
+        name,
+        icon: '📚',
+        color: '#6366f1',
+        builtIn: false,
+        questionCount: 0,
+        createdAt: Date.now()
+      });
+      await DB.put('questions', { subjectId: id, data: [] });
+
+      closeImportModal();
+      await renderDashboard();
+      showToast(`✅ Đã tạo môn "${name}" (chưa có câu hỏi)`);
+      document.getElementById('cfgName').value = '';
+      if (btn) {
+        btn.textContent = '⚡ Tạo môn trống (thêm câu sau)';
+        btn.disabled = false;
+      }
+    }
+
+    // ===== Save Subject =====
+    async function saveSubject() {
+      const btn = document.getElementById('btnSaveSubject');
+      btn.textContent = '⏳ Đang lưu...';
+      btn.disabled = true;
+
+      const name = document.getElementById('cfgName').value.trim() || 'Môn học mới';
+      const id   = 'subj_' + Date.now();
+
+      await DB.put('subjects', {
+        id, name, icon: '📚', color: '#6366f1',
+        builtIn: false, questionCount: parsedQuestions.length, createdAt: Date.now()
+      });
+      await DB.put('questions', { subjectId: id, data: parsedQuestions });
+
+      closeImportModal();
+      await renderDashboard();
+      showToast(`✅ Đã lưu môn "${name}" — ${parsedQuestions.length} câu hỏi`);
+      document.getElementById('cfgName').value = '';
+
+      btn.textContent = '💾 Lưu môn học';
+      btn.disabled = false;
+    }
+
+    // ===== Delete =====
+    function openDeleteModal(id, name, ev) {
+      if (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+      } else if (window.event) {
+        window.event.stopPropagation();
+        window.event.preventDefault();
+      }
+      pendingDeleteId = id;
+      document.getElementById('deleteMsg').textContent = `Bạn có chắc muốn xóa môn "${name}"? Toàn bộ câu hỏi và tiến độ của môn này sẽ bị mất vĩnh viễn.`;
+      document.getElementById('deleteOverlay').classList.add('show');
+    }
+    function closeDeleteModal() { document.getElementById('deleteOverlay').classList.remove('show'); pendingDeleteId=null; }
+    document.getElementById('btnConfirmDelete').addEventListener('click', async () => {
+      if (!pendingDeleteId) return;
+      await DB.delete('subjects',  pendingDeleteId);
+      await DB.delete('questions', pendingDeleteId);
+      await DB.delete('progress',  pendingDeleteId);
+      closeDeleteModal();
+      await renderDashboard();
+      showToast('🗑️ Đã xóa môn học');
+    });
+
+    // ===== Rename Subject =====
+    let pendingRenameId = null;
+    function openRenameModal(id, currentName, ev) {
+      if (ev) { ev.stopPropagation(); ev.preventDefault(); }
+      else if (window.event) { window.event.stopPropagation(); window.event.preventDefault(); }
+      pendingRenameId = id;
+      document.getElementById('renameDesc').textContent = `Tên hiện tại: "${currentName}"`;
+      const inp = document.getElementById('renameInput');
+      inp.value = currentName;
+      document.getElementById('renameOverlay').classList.add('show');
+      setTimeout(() => { inp.focus(); inp.select(); }, 80);
+    }
+    function closeRenameModal() {
+      document.getElementById('renameOverlay').classList.remove('show');
+      pendingRenameId = null;
+      document.getElementById('renameInput').value = '';
+    }
+    async function confirmRename() {
+      const newName = document.getElementById('renameInput').value.trim();
+      if (!newName) { showToast('⚠️ Tên môn học không được để trống!', 'error'); return; }
+      if (!pendingRenameId) return;
+      const subj = await DB.get('subjects', pendingRenameId);
+      if (!subj) { showToast('⚠️ Không tìm thấy môn học.', 'error'); closeRenameModal(); return; }
+      const oldName = subj.name;
+      subj.name = newName;
+      await DB.put('subjects', subj);
+      closeRenameModal();
+      await renderDashboard();
+      showToast(`✅ Đã đổi tên "${oldName}" → "${newName}"`);
+    }
+
+    // ===== Helpers =====
+    // Chỉ dùng trong nội dung được đưa vào innerHTML; giữ nguyên dữ liệu gốc.
+    // Cú pháp: mat(7,19;8,3), over(RD), Z^*_{17}, 2^(n-1), 0 -> 2.n.
+    function formatMathText(value) {
+      let text = escapeHTML(value).replace(/-&gt;/g, '→');
+      text = text.replace(/\b(?:mat|matrix)\(([^()]*)\)/gi, (_, body) => formatMatrix(body));
+      text = text.replace(/\b(?:over|overline)\(([^()]*)\)/gi, '<span class="math-overline">$1</span>');
+      return text
+        .replace(/\^\{([^{}]*)\}|\^\(([^()]*)\)|\^([*+\-−=a-zA-Z0-9])/g,
+          (_, braced, grouped, single) => '<sup>' + (braced ?? grouped ?? single) + '</sup>')
+        .replace(/_\{([^{}]*)\}|_\(([^()]*)\)|_([a-zA-Z0-9])/g,
+          (_, braced, grouped, single) => '<sub>' + (braced ?? grouped ?? single) + '</sub>');
+    }
+
+    function formatMatrix(body) {
+      const rows = body.split(';').map(row => row.split(',').map(cell => cell.trim()));
+      const content = rows.map(row => '<span class="math-matrix-row">' + row.map(cell => '<span>' + cell + '</span>').join('') + '</span>').join('');
+      return '<span class="math-matrix"><span class="math-matrix-bracket">(</span><span class="math-matrix-body">' + content + '</span><span class="math-matrix-bracket">)</span></span>';
+    }
+
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]||t));
+    }
+
+    function showToast(msg, type='info') {
+      const el = document.getElementById('dashboard-toast');
+      el.textContent = msg;
+      el.style.borderColor = type==='error' ? 'var(--danger)' : 'var(--primary)';
+      el.style.opacity = '1';
+      clearTimeout(el._t);
+      el._t = setTimeout(() => { el.style.opacity='0'; }, 3500);
+    }
+
+    // ===== Events =====
+    document.getElementById('btnOpenImport').addEventListener('click', openImportModal);
+    document.getElementById('importOverlay').addEventListener('click', function(e) { if (e.target===this) closeImportModal(); });
+    document.getElementById('deleteOverlay').addEventListener('click', function(e) { if (e.target===this) closeDeleteModal(); });
+    document.getElementById('renameOverlay').addEventListener('click', function(e) { if (e.target===this) closeRenameModal(); });
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
