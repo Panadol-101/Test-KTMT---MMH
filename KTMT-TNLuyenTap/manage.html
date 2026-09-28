@@ -787,6 +787,9 @@
         </div>
       </div>
       <div class="nav-actions">
+        <button class="btn btn-secondary" id="btnExportJSON" onclick="exportQuestionsJSON()" title="Tải toàn bộ câu hỏi môn này về máy dưới dạng file JSON">
+          📥 Xuất JSON
+        </button>
         <button class="btn btn-primary" id="btnOpenAddModal" onclick="openAddModal()">
           ➕ Thêm câu hỏi
         </button>
@@ -2039,6 +2042,26 @@
     function escapeHTML(str) {
       if (!str) return '';
       return String(str).replace(/[&<>'"]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]||t));
+    }
+
+    function exportQuestionsJSON() {
+      if (!state.questions || state.questions.length === 0) {
+        showToast('⚠️ Không có câu hỏi nào để xuất!', 'error');
+        return;
+      }
+      try {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.questions, null, 2));
+        const downloadAnchor = document.createElement('a');
+        const filename = `${state.subjectId || 'questions'}_data.json`;
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", filename);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast(`✅ Đã tải về file ${filename} (${state.questions.length} câu)!`);
+      } catch (err) {
+        showToast('❌ Lỗi khi xuất: ' + err.message, 'error');
+      }
     }
 
     function showToast(msg, type = 'info') {

@@ -734,6 +734,7 @@
               <a href="quiz.html?subject=${encodeURIComponent(s.id)}" class="btn btn-primary card-btn">📖 Vào ôn tập</a>
               <a href="manage.html?subject=${encodeURIComponent(s.id)}" class="btn btn-ghost card-btn">⚙️ Quản lý câu hỏi</a>
               <button type="button" class="btn btn-ghost card-btn" style="font-size:0.82rem;padding:0.3rem 0.7rem;" onclick="openRenameModal('${escapeHTML(s.id)}','${escapeHTML(s.name)}',event)" title="Đổi tên môn học">✏️ Sửa tên</button>
+              <button type="button" class="btn btn-ghost card-btn" style="font-size:0.82rem;padding:0.3rem 0.7rem;" onclick="exportSubjectJSON('${escapeHTML(s.id)}','${escapeHTML(s.name)}',event)" title="Xuất dữ liệu câu hỏi ra file JSON">📥 Xuất JSON</button>
             </div>
           </div>`;
       }
@@ -1340,6 +1341,32 @@
     function escapeHTML(str) {
       if (!str) return '';
       return String(str).replace(/[&<>'"]/g, t => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[t]||t));
+    }
+
+    async function exportSubjectJSON(id, name, e) {
+      if (e) e.stopPropagation();
+      try {
+        const qData = await DB.get('questions', id);
+        let list = qData && qData.data ? qData.data : [];
+        if (list.length === 0 && id === 'ktmt' && typeof QUESTIONS_DATA !== 'undefined') {
+          list = QUESTIONS_DATA;
+        }
+        if (!list || list.length === 0) {
+          showToast('⚠️ Môn học này chưa có câu hỏi nào!', 'error');
+          return;
+        }
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(list, null, 2));
+        const a = document.createElement('a');
+        const filename = `${id}_data.json`;
+        a.setAttribute("href", dataStr);
+        a.setAttribute("download", filename);
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        showToast(`✅ Đã tải về file ${filename} (${list.length} câu)!`);
+      } catch (err) {
+        showToast('❌ Lỗi khi xuất dữ liệu: ' + err.message, 'error');
+      }
     }
 
     function showToast(msg, type='info') {
